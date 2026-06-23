@@ -2,50 +2,60 @@ import subprocess
 import time
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 RESTORMER_DIR = PROJECT_ROOT / "third_party" / "Restormer"
 
-INPUT_DIR = PROJECT_ROOT / "data" / "test_frames"
 
-OUTPUT_DIR = PROJECT_ROOT / "data" / "test_restored_batch"
+def restore_frames(
+    input_dir,
+    output_dir,
+    task="Single_Image_Defocus_Deblurring"
+):
 
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    input_dir = Path(input_dir)
+    output_dir = Path(output_dir)
 
-frames = sorted(INPUT_DIR.glob("*.png"))
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-print(f"Found {len(frames)} frames")
+    frames = sorted(input_dir.glob("*.png"))
 
-times = []
+    print(f"Found {len(frames)} frames")
 
-for frame in frames:
-    print(f"\nProcessing {frame.name}")
+    times = []
 
-    start = time.time()
+    for frame in frames:
 
-    cmd = [
-        "python",
-        "demo.py",
-        "--task",
-        "Single_Image_Defocus_Deblurring",
-        "--input_dir",
-        str(frame),
-        "--result_dir",
-        str(OUTPUT_DIR)
-    ]
+        print(f"\nProcessing {frame.name}")
 
-    subprocess.run(
-        cmd,
-        cwd=RESTORMER_DIR
-    )
+        start = time.time()
 
-    elapsed = time.time() - start
+        cmd = [
+            "python",
+            "demo.py",
+            "--task",
+            task,
+            "--input_dir",
+            str(frame),
+            "--result_dir",
+            str(output_dir)
+        ]
 
-    times.append(elapsed)
+        subprocess.run(
+            cmd,
+            cwd=RESTORMER_DIR
+        )
 
-    print(f"Finished in {elapsed:.2f} sec")
+        elapsed = time.time() - start
 
-print("\nSummary")
-print(f"Frames: {len(times)}")
-print(f"Average: {sum(times)/len(times):.2f} sec")
-print(f"Total: {sum(times)/60:.2f} min")
+        times.append(elapsed)
+
+        print(f"Finished in {elapsed:.2f} sec")
+
+    if times:
+        print("\nSummary")
+        print(f"Frames: {len(times)}")
+        print(f"Average: {sum(times)/len(times):.2f} sec")
+        print(f"Total: {sum(times)/60:.2f} min")
+
+return output_dir / task

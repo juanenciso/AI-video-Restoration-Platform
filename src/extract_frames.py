@@ -1,30 +1,30 @@
 import cv2
-import os
+from pathlib import Path
 
-VIDEO_PATH = "data/videos/short.mp4"
-OUTPUT_DIR = "data/frames/degraded"
+def extract_frames(video_path, output_dir):
 
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-cap = cv2.VideoCapture(VIDEO_PATH)
+    cap = cv2.VideoCapture(str(video_path))
 
-frame_count = 0
+    frame_count = 0
 
-while True:
-    ret, frame = cap.read()
+    while True:
 
-    if not ret:
-        break
+        ret, frame = cap.read()
 
-    output_path = os.path.join(
-        OUTPUT_DIR,
-        f"frame_{frame_count:05d}.png"
-    )
+        if not ret:
+            break
 
-    cv2.imwrite(output_path, frame)
+        frame_path = output_dir / f"frame_{frame_count:05d}.png"
 
-    frame_count += 1
+        cv2.imwrite(str(frame_path), frame)
 
-cap.release()
+        frame_count += 1
 
-print(f"Extracted {frame_count} frames")
+    cap.release()
+
+    print(f"Extracted {frame_count} frames")
+
+    return frame_count

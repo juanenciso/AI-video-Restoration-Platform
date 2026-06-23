@@ -305,4 +305,10 @@ third_party/Restormer/demo/restored/
 third_party/Restormer/.eggs/
 third_party/Restormer/*.egg-info/
 
+__pycache__/
+*.pyc
+
+# Third-party repositories
+third_party/Restormer/
+
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks,visualstudiocode,macos
