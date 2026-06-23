@@ -53,7 +53,6 @@ Restored Video
 
 ## 6. Benchmark Results
 
-## Benchmark Results
 
 | Model | Resolution | Frames | Avg Time | Outcome |
 |---------|---------|---------|---------|---------|
