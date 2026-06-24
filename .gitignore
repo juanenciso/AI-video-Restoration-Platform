@@ -106,6 +106,7 @@ models/
 # Restormer temporary files
 # ==========================================
 
+third_party/
 third_party/Restormer/.eggs/
 third_party/Restormer/results/
 third_party/Restormer/__pycache__/
